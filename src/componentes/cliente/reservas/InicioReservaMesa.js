@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import Footer from '../../Footer/footer';
+
 
 const ReservaLocal = () => {
   const [formData, setFormData] = useState({
@@ -415,7 +415,7 @@ const ReservaLocal = () => {
            background-color: rgb(220, 220, 160);
         }
       `}</style>
-    <Footer  />
+    
     </div>
   );
 };

@@ -90,10 +90,12 @@ const BarraCliente = () => {
                 <FontAwesomeIcon icon={faCalendar} className="mr-2" /> Reservas
               </Link>
               <div id="reservas-menu" className={`dropdown-menu mt-2 rounded-lg shadow-lg bg-white ${showReservasMenu ? 'show' : ''}`}>
-                <Link to="#" className="block px-4 py-2">Reserva local</Link>
-                <Link to="#" className="block px-4 py-2">Reserva mesa</Link>
+                <Link to="/reservalocal" className="block px-4 py-2">Reserva local</Link>
+                <Link to="/InicioReservaMesa" className="block px-4 py-2">Reserva mesa</Link>
+                <Link to="/reservascliente" className='block px-4 py-2'>Consulta tus reservas</Link>
               </div>
             </div>
+
 
             <Link to="/pedidos" className="flex items-center text-gray-900 hover:text-yellow-800 cursor-pointer transition-colors duration-300 font-semibold no-underline">
               <FontAwesomeIcon icon={faShoppingBasket} className="mr-2" /> Pedidos

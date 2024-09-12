@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import { Route, Routes } from 'react-router-dom';  
 import { UserContext } from './context/UserContext';
 import ProtectedRoute from './componentes/ProtectedRouter'; 
+import Logout from './componentes/logout';
+import Carrito from './componentes/cliente/Pedidos/Carrito';
 import Index from "./paginas/auth/inicio";
 import Login from './componentes/auth/login';
 import BarraAdmin from './componentes/barras/BarraAdministrador';
@@ -11,17 +13,19 @@ import FormularioRegistro from './componentes/auth/registrocliente';
 import BarraNormal from "./componentes/barras/barra_normal";
 import ConsultaUsuarios from "./componentes/administrador/usuarios/consultausarios";
 import Footer from "./componentes/Footer/footer";
-import InfoReserva from "./componentes/cliente/reservas/InicioReservas";
 import InicioMesa from "./componentes/cliente/reservas/InicioReservaMesa";
 import ReservaLocal from "./componentes/cliente/reservas/reservalocal";
 import FormularioRegiEmp from './componentes/administrador/usuarios/regsitroempleados';
 import EditarUsuario from './componentes/administrador/usuarios/editarusuarios';
 import RegistroProductos from './componentes/administrador/Productos/RegistrarProductos';
+import GestionReservaMesa from "./componentes/administrador/Reservas/GestionReservaMesa";
+import GestionReservasCliente from "./componentes/cliente/reservas/reservascliente";
+import RegistroEventosCliente from "./componentes/cliente/eventos/EventosCliente";
+import RegistroEventos from "./componentes/administrador/eventos/RegistroEventos";
+import GestionEventos from "./componentes/administrador/eventos/ModificarEventos";
+import FormularioInscripcion from "./componentes/cliente/eventos/FormularioInscripcion";
+import ProductosCliente from './componentes/cliente/Productos/productos'
 import GestionProductos from './componentes/administrador/Productos/GestionProductos';
-import ProductosCliente from './componentes/cliente/Productos/productos';
-import Logout from './componentes/logout';
-import Carrito from './componentes/cliente/Pedidos/Carrito';
-
 
 const App = () => {
   const { role } = useContext(UserContext);
@@ -75,12 +79,7 @@ const App = () => {
             </ProtectedRoute>
           } />
 
-          {/* Rutas protegidas para clientes y meseros */}
-          <Route path="/InicioReservas" element={
-            <ProtectedRoute>
-              <InfoReserva />
-            </ProtectedRoute>
-          } />
+          
           <Route path="/InicioReservaMesa" element={
             <ProtectedRoute>
               <InicioMesa />
@@ -102,6 +101,52 @@ const App = () => {
               <Carrito />
             </ProtectedRoute>
           } />
+
+          <Route path="/GestionReservaMesa" element={
+            <ProtectedRoute>
+              <GestionReservaMesa/>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/GestionReservaLocal" element={
+            <ProtectedRoute>
+              <ReservaLocal/>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/reservascliente" element={
+            <ProtectedRoute>
+              <GestionReservasCliente/>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/EventosCliente" element={
+            <ProtectedRoute>
+              <RegistroEventosCliente/>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/RegistroEventos" element={
+            <ProtectedRoute>
+              <RegistroEventos/>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/ModificarEventos" element={
+            <ProtectedRoute>
+              <GestionEventos/>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/FormularioInscripcion" element={
+            <ProtectedRoute>
+              <FormularioInscripcion/>
+            </ProtectedRoute>
+          } />
+
+
+
+
 
 
           {/* Ruta para cerrar sesión */}

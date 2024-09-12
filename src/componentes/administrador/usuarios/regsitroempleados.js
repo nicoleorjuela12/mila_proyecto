@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-import Footer from '../../../componentes/Footer/footer';
-import BarraAdministrador from '../../barras/BarraAdministrador'; // Importación del componente
+
 
 const FormularioRegiEmp = () => {
   const [formData, setFormData] = useState({
@@ -89,7 +88,7 @@ const FormularioRegiEmp = () => {
 
   return (
     <div>
-      <BarraAdministrador /> {/* Aquí estás usando el componente */}
+
 
       <link rel="stylesheet" type="text/css" href="../estilos/estilos_barra.css" />
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
@@ -102,11 +101,11 @@ const FormularioRegiEmp = () => {
           background: linear-gradient(rgba(2, 2, 2, .7), rgba(0, 0, 0, .7)),url(https://i.ibb.co/nRVNh1H/En-mila-nuestras-tardes-se-ven-asi-ya-nos-conoces.jpg) center center;
         }
       `}} />
-      <div className="h-screen flex flex-col lg:flex-row">
+      <div className="h-screen flex flex-col lg:flex-row mt-36 mb-12">
         {/* Imagen de fondo */}
-        <div className="hidden lg:flex w-full lg:w-1/2 espacio_imagen1 justify-around items-center -mt-24">
+        <div className="hidden lg:flex w-full lg:w-1/2 espacio_imagen1 justify-around items-center mt-0">
           <div className="bg-black opacity-20 inset-0 z-0" />
-          <div className="w-full mx-auto px-20 flex-col items-center space-y-6 mb-4 mt-96">
+          <div className="w-full mx-auto px-20 flex-col items-center space-y-6 mb-4 mt-32">
             <h1 className="text-white font-bold text-4xl font-sansc ml-28 font-normal text-yellow-300">Beneficios de Registrarse</h1>
             <ul className="text-white list-inside ml-20 text-1xl font-normal ml-28">
               <li><i className="fa-solid fa-check" style={{color: '#FFD43B', marginRight: '3%'}} />Invitaciones a Eventos Especiales</li>
@@ -116,7 +115,7 @@ const FormularioRegiEmp = () => {
             </ul>
           </div>
         </div>
-        <div className="flex w-full lg:w-1/2 justify-center items-center imagen_formulario space-y-4 p-4 lg:p-6 -mt-24">
+        <div className="flex w-full lg:w-1/2 justify-center items-center imagen_formulario space-y-4 p-4 lg:p-6 mt-0">
           <div className="w-full max-w-2xl px-4 lg:px-6">
             <form id="registerForm" className="bg-white rounded-lg shadow-lg p-4 lg:p-6 space-y-4 grid grid-cols-1 lg:grid-cols-2 gap-4 border border-gray-200 mt-6" onSubmit={handleSubmit}>
               <h1 className="text-gray-800 font-bold text-2xl col-span-2 text-center mb-0 pb-0">¡Regístrate!</h1>
@@ -360,7 +359,7 @@ const FormularioRegiEmp = () => {
           </div>
         </div>
       </div>
-      <Footer />
+
     </div>
   );
 };
