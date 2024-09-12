@@ -1,26 +1,34 @@
-import React, { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Cambiar useHistory por useNavigate
 
-// Crea el contexto
-const UserContext = createContext();
+export const UserContext = createContext();
 
-// Crea un proveedor de contexto
-const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+export const UserProvider = ({ children }) => {
+  const [role, setRole] = useState('normal'); // Valor por defecto
+  const navigate = useNavigate(); // Cambiar a useNavigate para redireccionar
 
-  const login = (userData) => {
-    setUser(userData);
-  };
+  useEffect(() => {
+    // Al montar el componente, verifica si el rol está guardado en el localStorage
+    const storedRole = localStorage.getItem('role');
+    if (storedRole) {
+      setRole(storedRole); // Actualiza el estado con el rol almacenado
+    }
+  }, []);
 
   const logout = () => {
-    setUser(null);
+    // Limpia el localStorage y restablece el rol
+    localStorage.removeItem('role');
+    setRole('normal');
+    
+    // Redirige a la página de login usando navigate
+    navigate('/login');
+    
+    // Aquí puedes agregar lógica adicional para el cierre de sesión, si es necesario
   };
 
   return (
-    <UserContext.Provider value={{ user, login, logout }}>
+    <UserContext.Provider value={{ role, setRole, logout }}>
       {children}
     </UserContext.Provider>
   );
 };
-
-export { UserProvider };
-export default UserContext;

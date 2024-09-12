@@ -1,22 +1,6 @@
 {
   "usuarios": [
     {
-      "id": "4717",
-      "rol": "community_manager",
-      "nombre": "Julian",
-      "apellido": "martinez",
-      "telefono": "3148812180",
-      "numero_documento": "1019087056",
-      "tipo_documento": "Cedula de ciudadania",
-      "barrio": "santa rita",
-      "email": "julian1453e@gmail.com",
-      "contrasena": "Hola1234#",
-      "redes": "facebook",
-      "horario": "",
-      "titulo": "",
-      "estado": "Activo"
-    },
-    {
       "id": "a917",
       "rol": "mesero",
       "nombre": "nicole ",
@@ -49,22 +33,6 @@
       "estado": "Activo"
     },
     {
-      "id": "85a8",
-      "rol": "administrador",
-      "nombre": "johan",
-      "apellido": "martinez",
-      "telefono": "3208502619",
-      "numero_documento": "11255186",
-      "tipo_documento": "Cedula de ciudadania",
-      "barrio": "compartir",
-      "email": "johan14@gmail.com",
-      "contrasena": "Hola12345#",
-      "redes": "",
-      "horario": "",
-      "titulo": "administrador",
-      "estado": "Activo"
-    },
-    {
       "id": "5bae",
       "nombre": "Esteban",
       "apellido": "Martinez",
@@ -75,6 +43,36 @@
       "barrio": "las brisas",
       "email": "johan.mtinez@gmail.com",
       "contrasena": "Johan@1234",
+      "rol": "Cliente",
+      "estado": "Activo",
+      "aceptaTerminos": true
+    },
+    {
+      "id": "fdaf",
+      "nombre": "Nicolas ",
+      "apellido": "Fandino",
+      "telefono": "3148812180",
+      "numero_documento": "41355906",
+      "tipo_documento": "Cedula de ciudadania",
+      "direccion": "cll 133 # 156 a 20",
+      "barrio": "santa rita",
+      "email": "nicolas15@gmail.com",
+      "contrasena": "Hola1234#",
+      "rol": "Cliente",
+      "estado": "Activo",
+      "aceptaTerminos": true
+    },
+    {
+      "id": "b212",
+      "nombre": "nicole ",
+      "apellido": "perez",
+      "telefono": "3148812180",
+      "numero_documento": "55555222",
+      "tipo_documento": "Cedula de ciudadania",
+      "direccion": "cll 133 # 156 a 20",
+      "barrio": "sdggggg",
+      "email": "pablo365656@gmail.com",
+      "contrasena": "Hola12345.",
       "rol": "Cliente",
       "estado": "Activo",
       "aceptaTerminos": true
@@ -99,15 +97,6 @@
     }
   ],
   "productos": [
-    {
-      "id": "a595",
-      "nombre": "hola",
-      "precio": "8550",
-      "descripcion": "ñksdñlfklsdkfslkf",
-      "imagen": "https://st.depositphotos.com/1692343/1996/i/450/depositphotos_19965431-stock-photo-fresh-homemade-chocolate-brownie.jpg",
-      "categoria": "entradas",
-      "estado": "activo"
-    },
     {
       "id": "55f7",
       "nombre": "brownie",
@@ -141,6 +130,16 @@
     {
       "id": "4b92",
       "nombre": "Pastel",
+      "precio": "50.000",
+      "descripcion": "Pastel re rico ñero",
+      "imagen": "https://example.com/image.png",
+      "categoria": "postres",
+      "estado": "activo",
+      "fechaRegistro": "2024-09-10T00:21:33.204Z"
+    },
+    {
+      "id": "4b72",
+      "nombre": "puño",
       "precio": "50.000",
       "descripcion": "Pastel re rico ñero",
       "imagen": "https://example.com/image.png",

@@ -1,98 +1,161 @@
-import { Link } from "react-router-dom"
+import React, { useState, useEffect, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faBox, faShoppingBasket, faCalendarCheck, faConciergeBell, faUser } from '@fortawesome/free-solid-svg-icons';
+import Swal from 'sweetalert2';
+import { UserContext } from '../../context/UserContext'; // Asegúrate de importar el contexto correctamente
 
-const BarraMesero = ()=>{
-    return(
-        <div>
-  <meta charSet="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Barra de navegación mesero</title>
-  <link rel="stylesheet" type="text/css" href="../estilos/estilos_barra.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-  <script src="../scripts/scripts_mesero.js"></script>
-  <div className="flex flex-col items-center justify-center mb-24">
-    <div className="flex flex-col">
-      <div className="fixed inset-x-0 top-0 z-50 h-0.5 mt-0.5 bg-yellow-300" />
-      <nav className="flex justify-between items-center py-4 navbar_gradient backdrop-blur-md shadow-md w-full fixed top-0 left-0 right-0 z-10 h-24 px-8">
-        {/* Logo Container */}
-        <div className="flex items-center space-x-4 ml-2">
-          <Link  className="cursor-pointer flex items-center">
-            <img className="h-20 object-cover" src="https://i.ibb.co/gj0Bpcc/logo-empresa-mila.png" alt="logo-empresa-mila" />
-          </Link>
-        </div>
-        {/* Button for mobile menu */}
-        <button data-collapse-toggle="mobile-menu-2" type="button" className="inline-flex items-center p-2 ml-1 text-sm text-black-500 rounded-lg lg:hidden hover:bg-yellow-200 focus:outline-none focus:ring-2 focus:ring-yellow-200">
-          <span className="sr-only">Open main menu</span>
-          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
-          </svg>
-          <svg className="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-          </svg>
-        </button>
-        {/* Links Section */}
-        <div id="mobile-menu-2" className="hidden lg:flex flex-col lg:flex-row lg:items-center lg:space-x-12 space-y-2 lg:space-y-0 ">
-          {/* Imagen para modo pequeño */}
-          <img src="https://via.placeholder.com/150" alt="Imagen adicional" className="block lg:hidden mx-auto mb-2 opacity-0" />
-          <a href className="flex items-center text-gray-900 hover:text-yellow-800 cursor-pointer font-semibold transition-colors duration-300">
-            <i className="fa fa-home mr-2" /> Inicio
-          </a>
-          <a href className="flex items-center text-yellow-600 cursor-pointer transition-colors duration-300 font-semibold">
-            <i className="fa fa-box mr-2" /> Productos
-          </a>
-          <div className="relative">
-            <a href id="reservas-button" className="flex items-center text-gray-900 hover:text-yellow-800 cursor-pointer transition-colors duration-300 font-semibold">
-              <i className="fa fa-calendar mr-2" /> Reservas
-            </a>
-            <div id="reservas-menu" className="dropdown-menu mt-2 rounded-lg shadow-lg bg-white">
-              <Link to="#">Reserva local</Link>
-              <Link to="#">Reserva mesa</Link>
+const BarraMesero = () => {
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const navigate = useNavigate();
+  const { logout } = useContext(UserContext); // Usamos el contexto aquí
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      
+      if (!e.target.closest('#user-menu-button') && !e.target.closest('#user-menu')) {
+        setShowUserMenu(false);
+      }
+      if (!e.target.closest('#mobile-menu-button') && !e.target.closest('#mobile-menu')) {
+        setShowMobileMenu(false);
+      }
+      
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
+
+  const handleLogout = () => {
+    logout();
+    localStorage.clear(); // O sessionStorage.clear();
+    setShowUserMenu(false);
+  
+    Swal.fire({
+      title: 'Sesión cerrada',
+      text: 'Tu sesión ha sido cerrada exitosamente.',
+      icon: 'success',
+      confirmButtonText: 'Aceptar'
+    }).then(() => {
+      navigate('/logout', { replace: true });
+      window.location.reload(); // Opcional para asegurar que se recargue la app
+    });
+  };
+  
+  return (
+    <div className="flex flex-col items-center justify-center mb-24">
+      <div className="flex flex-col">
+        <div className="fixed inset-x-0 top-0 z-50 h-0.5 mt-0.5 bg-yellow-300"></div>
+        <nav className="flex justify-between items-center py-4 navbar_gradient backdrop-blur-md shadow-md w-full fixed top-0 left-0 right-0 z-10 h-24 px-8">
+          <div className="flex items-center space-x-4 ml-2">
+            <Link to="/" className="cursor-pointer flex items-center">
+              <img className="h-20 object-cover" src="https://i.ibb.co/gj0Bpcc/logo-empresa-mila.png" alt="logo-empresa-mila" />
+            </Link>
+          </div>
+
+          <button
+            id="mobile-menu-button"
+            type="button"
+            className="inline-flex items-center p-2 ml-1 text-sm text-black-500 rounded-lg lg:hidden hover:bg-yellow-200 focus:outline-none focus:ring-2 focus:ring-yellow-200"
+            onClick={() => setShowMobileMenu(!showMobileMenu)}
+          >
+            <span className="sr-only">Open main menu</span>
+            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"></path>
+            </svg>
+          </button>
+
+          <div id="desktop-menu" className="hidden lg:flex flex-col lg:flex-row lg:items-center lg:space-x-12 space-y-2 lg:space-y-0">
+            <Link to="/" className="flex items-center text-gray-900 hover:text-yellow-800 cursor-pointer font-semibold transition-colors duration-300 no-underline">
+              <FontAwesomeIcon icon={faHome} className="mr-2" /> Inicio
+            </Link>
+
+            <Link to="/productos" className="flex items-center text-gray-900 hover:text-yellow-800 cursor-pointer font-semibold transition-colors duration-300 no-underline">
+              <FontAwesomeIcon icon={faBox} className="mr-2" /> Productos
+            </Link>
+
+            <Link to="/pedidos" className="flex items-center text-gray-900 hover:text-yellow-800 cursor-pointer transition-colors duration-300 font-semibold no-underline">
+              <FontAwesomeIcon icon={faShoppingBasket} className="mr-2" /> Pedidos
+            </Link>
+            <Link to="/eventos" className="flex items-center text-gray-900 hover:text-yellow-800 cursor-pointer transition-colors duration-300 font-semibold no-underline">
+              <FontAwesomeIcon icon={faCalendarCheck} className="mr-2" /> Eventos
+            </Link>
+            <Link to="/servicios" className="flex items-center text-gray-900 hover:text-yellow-800 cursor-pointer transition-colors duration-300 font-semibold no-underline">
+              <FontAwesomeIcon icon={faConciergeBell} className="mr-2" /> Servicios
+            </Link>
+          </div>
+
+          <div className="flex items-center space-x-6">
+            <Link to="/carrito" className="flex items-center">
+              <img src="https://cdn-icons-png.flaticon.com/512/107/107831.png" alt="Carrito" className="h-8 w-8" />
+            </Link>
+            <div className="relative">
+              <button
+                id="user-menu-button"
+                className="flex items-center text-gray-900 hover:text-yellow-800 cursor-pointer transition-colors duration-300 font-semibold no-underline"
+                onClick={() => setShowUserMenu(!showUserMenu)}
+              >
+                <FontAwesomeIcon icon={faUser} className="text-gray-900 h-8 w-8" />
+              </button>
+              {showUserMenu && (
+                <div id="user-menu" className="absolute right-0 mt-2 w-48 py-2 bg-white border border-gray-200 rounded-lg shadow-lg">
+                  <Link to="/perfil" className="block px-4 py-2 text-gray-700 hover:bg-yellow-200 no-underline">Perfil</Link>
+                  <button onClick={handleLogout} className="block w-full px-4 py-2 text-red-700 hover:bg-yellow-200 text-left">Cerrar sesión</button>
+                </div>
+              )}
             </div>
           </div>
-          <Link to="#" className="flex items-center text-gray-900 hover:text-yellow-800 cursor-pointer transition-colors duration-300 font-semibold">
-            <i className="fa fa-shopping-basket mr-2" /> Pedidos
-          </Link>
-          <a href className="flex items-center text-gray-900 hover:text-yellow-800 cursor-pointer transition-colors duration-300 font-semibold">
-            <i className="fa fa-calendar-check-o mr-2" /> Eventos
-          </a>
-          <Link to="#" className="flex items-center text-gray-900 hover:text-yellow-800 cursor-pointer transition-colors duration-300 font-semibold">
-            <i className="fa fa-concierge-bell mr-2" /> Servicios
-          </Link>
-        </div>
-        {/* Nuevo Div para Tareas y Menú Desplegable Horizontal */}
-        <div className="relative flex items-center">
-          <Link id="tareas-button" className="flex items-center text-gray-900 hover:text-yellow-800 cursor-pointer transition-colors duration-300 font-semibold">
-            <i className="fa fa-tasks mr-2" /> Tareas
-          </Link>
-          <div id="tareas-menu" className="horizontal-dropdown mt-2 rounded-lg shadow-lg bg-white">
-            <div className="dropdown-menu">
-              <Link href="#">Pedidos</Link>
-            </div>
-          </div>
-        </div>
-        {/* User and Cart Section */}
-        <div className="flex items-center space-x-6">
-          <Link className="flex items-center">
-            <img src="https://cdn-icons-png.flaticon.com/512/107/107831.png" alt="Carrito" className="h-8 w-8" />
-          </Link>
-          <div className="relative">
-            <button id="user-menu-button" className="flex items-center text-yellow-200 hover:bg-yellow-200 focus:ring-4 focus:ring-yellow-200 font-medium rounded-full p-2">
-              <svg className="w-8 h-8 text-gray-800" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path fillRule="evenodd" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM4 20c0-2.21 4-4 8-4s8 1.79 8 4v1H4v-1z" clipRule="evenodd" />
+        </nav>
+
+        <div id="mobile-menu" className={`lg:hidden ${showMobileMenu ? 'block' : 'hidden'} fixed top-0 left-0 w-full h-full bg-white shadow-lg z-20`}>
+          <div className="flex justify-between items-center p-4 border-b border-gray-200">
+            <span className="text-xl font-semibold">Menú</span>
+            <button
+              id="close-menu-button"
+              className="text-gray-600 hover:text-gray-900"
+              onClick={() => setShowMobileMenu(false)}
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
               </svg>
             </button>
-            <div id="user-menu" className="dropdown-menu mt-2 rounded-lg shadow-lg bg-white">
-              <Link to="#">Mi perfil</Link>
-              <Link to="#">Cerrar sesión</Link>
-            </div>
+          </div>
+          <div className="flex flex-col p-4 space-y-2">
+            <Link to="/" className="text-gray-900 hover:text-yellow-800" onClick={() => setShowMobileMenu(false)}>
+              <FontAwesomeIcon icon={faHome} className="mr-2" /> Inicio
+            </Link>
+            <Link to="/productos" className="flex items-center text-gray-900 hover:text-yellow-800 cursor-pointer font-semibold transition-colors duration-300 no-underline">
+              <FontAwesomeIcon icon={faBox} className="mr-2" /> Productos
+            </Link>
+
+
+
+            
+            <Link to="/pedidos" className="text-gray-900 hover:text-yellow-800" onClick={() => setShowMobileMenu(false)}>
+              <FontAwesomeIcon icon={faShoppingBasket} className="mr-2" /> Pedidos
+            </Link>
+            <Link to="/eventos" className="text-gray-900 hover:text-yellow-800" onClick={() => setShowMobileMenu(false)}>
+              <FontAwesomeIcon icon={faCalendarCheck} className="mr-2" /> Eventos
+            </Link>
+            <Link to="/servicios" className="text-gray-900 hover:text-yellow-800" onClick={() => setShowMobileMenu(false)}>
+              <FontAwesomeIcon icon={faConciergeBell} className="mr-2" /> Servicios
+            </Link>
+            <Link to="/perfil" className="text-gray-900 hover:text-yellow-800" onClick={() => setShowMobileMenu(false)}>
+              <FontAwesomeIcon icon={faUser} className="mr-2" /> Perfil
+            </Link>
+            <button onClick={handleLogout} className="text-gray-900 hover:text-yellow-800">
+              <FontAwesomeIcon icon={faUser} className="mr-2" /> Cerrar sesión
+            </button>
           </div>
         </div>
-      </nav>
+      </div>
     </div>
-  </div>
-</div>
+  );
 
-    )
-}
+  
+};
+
+
 
 export default BarraMesero;

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faBox, faUsers, faCalendar, faShoppingBasket, faCalendarCheck, faConciergeBell, faUser } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
+import { UserContext } from '../../context/UserContext'; // Asegúrate de importar el contexto correctamente
 
 const BarraAdmin = () => {
   const [showReservasMenu, setShowReservasMenu] = useState(false);
@@ -10,8 +11,9 @@ const BarraAdmin = () => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showMobileReservasMenu, setShowMobileReservasMenu] = useState(false);
   const [showUsuariosMenu, setShowUsuariosMenu] = useState(false);
-  const [showProductosMenu, setShowProductosMenu] = useState(false); // Nuevo estado para el menú de productos
+  const [showProductosMenu, setShowProductosMenu] = useState(false);
   const navigate = useNavigate();
+  const { logout } = useContext(UserContext); // Usamos el contexto aquí
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -40,20 +42,22 @@ const BarraAdmin = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('role');
-    localStorage.removeItem('user');
+    logout();
+    localStorage.clear(); // O sessionStorage.clear();
     setShowUserMenu(false);
-
+  
     Swal.fire({
       title: 'Sesión cerrada',
       text: 'Tu sesión ha sido cerrada exitosamente.',
       icon: 'success',
       confirmButtonText: 'Aceptar'
     }).then(() => {
-      navigate('/');
-      window.location.reload();
+      navigate('/logout', { replace: true });
+      window.location.reload(); // Opcional para asegurar que se recargue la app
     });
   };
+  
+  
 
   return (
     <div className="flex flex-col items-center justify-center mb-24">
@@ -225,6 +229,10 @@ const BarraAdmin = () => {
       </div>
     </div>
   );
+
+  
 };
+
+
 
 export default BarraAdmin;

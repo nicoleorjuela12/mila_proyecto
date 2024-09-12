@@ -21,7 +21,7 @@ const ConsultaUsuarios = () => {
         const response = await axios.get('http://localhost:3000/usuarios');
         // Filtrar solo usuarios con roles específicos y activos
         const usuariosFiltrados = response.data.filter(usuario =>
-          (usuario.rol === 'administrador' || usuario.rol === 'mesero' || usuario.rol === 'community_manager') && usuario.estado === 'Activo'
+          (usuario.rol === 'administrador' || usuario.rol === 'mesero' ) && usuario.estado === 'Activo'
         );
         setUsuarios(usuariosFiltrados);
         setLoading(false);
@@ -53,7 +53,7 @@ const ConsultaUsuarios = () => {
         // Re-fetch the users after deletion
         const response = await axios.get('http://localhost:3000/usuarios');
         const usuariosFiltrados = response.data.filter(usuario =>
-          (usuario.rol === 'administrador' || usuario.rol === 'mesero' || usuario.rol === 'community_manager') && usuario.estado === 'Activo'
+          (usuario.rol === 'administrador' || usuario.rol === 'mesero' ) && usuario.estado === 'Activo'
         );
         setUsuarios(usuariosFiltrados);
   
@@ -112,7 +112,6 @@ const ConsultaUsuarios = () => {
             <option value="">Todos los roles</option>
             <option value="administrador">Administrador</option>
             <option value="mesero">Mesero</option>
-            <option value="community_manager">Community Manager</option>
           </select>
         </div>
 
@@ -127,7 +126,6 @@ const ConsultaUsuarios = () => {
                 <th className="py-2 px-4 border-b">Tipo de Documento</th>
                 <th className="py-2 px-4 border-b">Correo Electrónico</th>
                 <th className="py-2 px-4 border-b">Rol</th>
-                <th className="py-2 px-4 border-b">Redes</th>
                 <th className="py-2 px-4 border-b">Título</th>
                 <th className="py-2 px-4 border-b">Horario</th>
                 <th className="py-2 px-4 border-b">Acciones</th>
@@ -143,7 +141,6 @@ const ConsultaUsuarios = () => {
                   <td className="py-2 px-4 border-b">{usuario.tipo_documento}</td>
                   <td className="py-2 px-4 border-b">{usuario.email}</td>
                   <td className="py-2 px-4 border-b">{usuario.rol}</td>
-                  <td className="py-2 px-4 border-b">{usuario.redes}</td>
                   <td className="py-2 px-4 border-b">{usuario.titulo}</td>
                   <td className="py-2 px-4 border-b">{usuario.horario}</td>
 

@@ -1,44 +1,44 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import BarraAdministrador from '../../componentes/barras/BarraAdministrador';
+import React, { useContext, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { UserContext } from '../../context/UserContext'; // Importa el contexto de usuario
+import '../../index.css';
+
+// Importa los componentes de barra de navegación
+import BarraAdmin from '../../componentes/barras/BarraAdministrador';
 import BarraCliente from '../../componentes/barras/BarraCliente';
 import BarraMesero from '../../componentes/barras/BarraMesero';
-import BarraCommunity from '../../componentes/barras/BarraCommunity';
 import BarraNormal from "../../componentes/barras/barra_normal";
-import '../../index.css';
-import Footer from "../../componentes/Footer/footer";
 
 const Index = () => {
-  const [userRole, setUserRole] = useState(null);
+  const { role, setRole } = useContext(UserContext); // Obtén el rol del contexto
   const navigate = useNavigate();
 
+  // Efecto para manejar la redirección al iniciar sesión
   useEffect(() => {
-    // Obtener el rol del usuario desde localStorage
-    const role = localStorage.getItem('role');
-    setUserRole(role);
-  }, []); // Se ejecuta una vez al montar el componente
+    const storedRole = localStorage.getItem('role');
+    if (storedRole) {
+      setRole(storedRole);
+    } else {
+      navigate('/login'); // Redirige a la página de inicio de sesión si no hay rol
+    }
+  }, [setRole, navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem('role');
-    setUserRole(null);
+    setRole('normal');  // Restablece el rol al valor por defecto
     navigate('/');  // Redirige al inicio o página deseada
   };
 
-  const renderBarra = () => {
-    switch (userRole) {
-      case 'administrador':
-        return <BarraAdministrador />;
-      case 'Cliente':
-        return <BarraCliente />;
-      case 'mesero':
-        return <BarraMesero />;
-      case 'Ccommunity_manager':
-        return <BarraCommunity />;
-      default:
-        return <BarraNormal />;
-    }
-  };
+  // Determina el componente de la barra de navegación según el rol
+  let NavBarComponent = BarraNormal; // Valor por defecto
 
+  if (role === 'administrador') {
+    NavBarComponent = BarraAdmin;
+  } else if (role === 'Cliente') {
+    NavBarComponent = BarraCliente;
+  } else if (role === 'mesero') {
+    NavBarComponent = BarraMesero;
+  }
 
   return (
     <div>
@@ -48,7 +48,7 @@ const Index = () => {
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
       {/* Renderiza la barra correspondiente */}
-      {renderBarra()}
+      <NavBarComponent />
 
       {/* Contenido de la página */}
       <div className="container mx-auto pt-5">
@@ -134,35 +134,35 @@ const Index = () => {
           <div className="relative text-center py-[115px] pb-[35px]">
             <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[2px] h-[100px] bg-[#DA9F5B]" />
           </div>
-          <h1 className="text-4xl font-bold text-center font-serif my-4 shadow-md">Porque venir a Mila</h1>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-5">
-            <div className="border border-[#DA9F5B] shadow-lg rounded-lg p-5">
-              <i className="fa fa-gift text-4xl text-[#DA9F5B] mb-4" />
-              <h3 className="text-xl font-bold mb-3">Gran Experiencia</h3>
-              <p>Venir a Mila te garantiza una experiencia culinaria inigualable, con un ambiente acogedor y un servicio de primer nivel.</p>
+          <h1 className="text-4xl font-bold mb-5 text-center">Experiencia Gourmet Única</h1>
+          <div className="flex flex-wrap -mx-4">
+            <div className="w-full md:w-1/3 px-4 mb-5">
+              <div className="bg-white rounded-lg shadow-lg p-6 text-center">
+                <img className="w-24 h-24 mx-auto mb-4" src="gourmet.png" alt="Experiencia Gourmet" />
+                <h3 className="text-xl font-semibold mb-2">Experiencia Gourmet</h3>
+                <p>Disfruta de una experiencia culinaria excepcional con nuestros platos gourmet preparados por chefs expertos.</p>
+                <Link to="/reservar" className="block mt-4 text-blue-600 hover:underline">Reserva ahora</Link>
+              </div>
             </div>
-            <div className="border border-[#DA9F5B] shadow-lg rounded-lg p-5">
-              <i className="fa fa-star text-4xl text-[#DA9F5B] mb-4" />
-              <h3 className="text-xl font-bold mb-3">Calidad en el Servicio</h3>
-              <p>Ofrecemos un servicio excepcional, cuidando cada detalle para que tu visita sea memorable.</p>
+            <div className="w-full md:w-1/3 px-4 mb-5">
+              <div className="bg-white rounded-lg shadow-lg p-6 text-center">
+                <img className="w-24 h-24 mx-auto mb-4" src="local.png" alt="Ambiente Agradable" />
+                <h3 className="text-xl font-semibold mb-2">Ambiente Agradable</h3>
+                <p>Relájate en un ambiente acogedor y elegante que te hará sentir como en casa.</p>
+                <Link to="/local" className="block mt-4 text-blue-600 hover:underline">Más información</Link>
+              </div>
             </div>
-            <div className="border border-[#DA9F5B] shadow-lg rounded-lg p-5">
-              <i className="fa fa-cocktail text-4xl text-[#DA9F5B] mb-4" />
-              <h3 className="text-xl font-bold mb-3">Menú Variado</h3>
-              <p>Descubre nuestra oferta gastronómica variada y deliciosa, diseñada para satisfacer todos los gustos.</p>
+            <div className="w-full md:w-1/3 px-4 mb-5">
+              <div className="bg-white rounded-lg shadow-lg p-6 text-center">
+                <img className="w-24 h-24 mx-auto mb-4" src="specials.png" alt="Ofertas Especiales" />
+                <h3 className="text-xl font-semibold mb-2">Ofertas Especiales</h3>
+                <p>Aprovecha nuestras ofertas especiales y promociones exclusivas para disfrutar aún más de tu experiencia.</p>
+                <Link to="/ofertas" className="block mt-4 text-blue-600 hover:underline">Ver ofertas</Link>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
-      <Footer />
-
-      {/* Botón de cierre de sesión */}
-      {userRole && (
-        <button onClick={handleLogout} className="logout-button">
-          Cerrar sesión
-        </button>
-      )}
     </div>
   );
 };

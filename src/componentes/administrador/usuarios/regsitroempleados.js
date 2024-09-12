@@ -16,7 +16,6 @@ const FormularioRegiEmp = () => {
     barrio: '',
     email: '',
     contrasena: '',
-    redes: '',
     horario: '',
     titulo: '',
     estado: 'Activo'
@@ -25,7 +24,6 @@ const FormularioRegiEmp = () => {
   const [mostrarContrasena, setMostrarContrasena] = useState(false);
   const [showFields, setShowFields] = useState({
     horario: false,
-    redes: false,
     titulo: false
   });
   const navigate = useNavigate();
@@ -41,7 +39,6 @@ const FormularioRegiEmp = () => {
       // Update showFields based on selected role
       setShowFields({
         horario: value === 'mesero',
-        redes: value === 'community_manager',
         titulo: value === 'administrador'
       });
     }
@@ -130,7 +127,6 @@ const FormularioRegiEmp = () => {
                 <div className="flex items-center border-2 border-yellow-300 py-1 px-2 rounded-md w-full">
                   <select id="rol" name="rol" className="pl-2 w-full outline-none border-none rounded-md text-sm" value={formData.rol} onChange={handleChange} required>
                     <option value="" disabled>Selecciona tu rol</option>
-                    <option value="community_manager">Community Manager</option>
                     <option value="mesero">Mesero</option>
                     <option value="administrador">Administrador</option>
                   </select>
@@ -145,27 +141,7 @@ const FormularioRegiEmp = () => {
                   </div>
                 </div>
               )}
-              {showFields.redes && (
-                <div className="flex flex-col space-y-1">
-                  <label htmlFor="redes" className="text-gray-700 font-semibold text-xs">Redes Sociales</label>
-                  <div className="flex items-center border-2 border-yellow-300 py-1 px-2 rounded-md w-full">
-                    <i className="fas fa-share-alt text-gray-400" />
-                    <select 
-                      id="redes" 
-                      name="redes" 
-                      className="pl-2 w-full outline-none border-none rounded-md text-sm" 
-                      value={formData.redes} 
-                      onChange={handleChange} 
-                      required
-                    >
-                      <option value="" disabled>Selecciona una red social</option>
-                      <option value="facebook">Facebook</option>
-                      <option value="instagram">Instagram</option>
-                      <option value="tiktok">TikTok</option>
-                    </select>
-                  </div>
-                </div>
-              )}
+            
               {showFields.horario && (
                 <div className="flex flex-col space-y-1">
                   <label htmlFor="horario" className="text-gray-700 font-semibold text-xs">Horario</label>

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBox, faDollarSign, faList, faCamera, faTimes } from "@fortawesome/free-solid-svg-icons";
 import BarraAdmin from "../../barras/BarraAdministrador";
-import Footer from "../../../componentes/Footer/footer";
 import Swal from "sweetalert2";
 
 function RegistroProductos() {
@@ -271,7 +270,6 @@ function RegistroProductos() {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 }

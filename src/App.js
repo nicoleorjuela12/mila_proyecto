@@ -1,12 +1,12 @@
-import React, { Fragment } from "react";
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { UserProvider } from './context/UserContext'; // Asegúrate de que la ruta sea correcta
-import Index from "./paginas/auth/index";
+import React, { useContext } from 'react';
+import { Route, Routes } from 'react-router-dom';  
+import { UserContext } from './context/UserContext';
+import ProtectedRoute from './componentes/ProtectedRouter'; 
+import Index from "./paginas/auth/inicio";
 import Login from './componentes/auth/login';
 import BarraAdmin from './componentes/barras/BarraAdministrador';
 import BarraCliente from './componentes/barras/BarraCliente';
 import BarraMesero from './componentes/barras/BarraMesero';
-import BarraCommunity from './componentes/barras/BarraCommunity';
 import FormularioRegistro from './componentes/auth/registrocliente';
 import BarraNormal from "./componentes/barras/barra_normal";
 import ConsultaUsuarios from "./componentes/administrador/usuarios/consultausarios";
@@ -17,46 +17,100 @@ import ReservaLocal from "./componentes/cliente/reservas/reservalocal";
 import FormularioRegiEmp from './componentes/administrador/usuarios/regsitroempleados';
 import EditarUsuario from './componentes/administrador/usuarios/editarusuarios';
 import RegistroProductos from './componentes/administrador/Productos/RegistrarProductos';
+import GestionProductos from './componentes/administrador/Productos/GestionProductos';
+import ProductosCliente from './componentes/cliente/Productos/productos';
+import Logout from './componentes/logout';
+import Carrito from './componentes/cliente/Pedidos/Carrito';
+
 
 const App = () => {
-  const userRole = localStorage.getItem('role');
+  const { role } = useContext(UserContext);
 
-  const renderBarra = () => {
-    switch (userRole) {
-      case 'administrador':
-        return <BarraAdmin />;
-      case 'Cliente':
-        return <BarraCliente />;
-      case 'mesero':
-        return <BarraMesero />;
-      case 'community_manager':
-        return <BarraCommunity />;
-      default:
-        return <BarraNormal />;
-    }
-  };
+  console.log("Current Role:", role); // Debugging statement
+
+  let NavBarComponent = BarraNormal; // Default value
+
+  if (role === 'administrador') {
+    NavBarComponent = BarraAdmin;
+  } else if (role === 'Cliente') {
+    NavBarComponent = BarraCliente;
+  } else if (role === 'mesero') {
+    NavBarComponent = BarraMesero;
+  }
 
   return (
-    <UserProvider>
-      <Fragment>
-        <Router>
-          {renderBarra()}
-          <Routes>
-            <Route path='/' element={<Index />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/registrocliente" element={<FormularioRegistro />} />
-            <Route path="/consultausarios" element={<ConsultaUsuarios />} />
-            <Route path="/regsitroempleados" element={<FormularioRegiEmp />} />
-            <Route path="/editarusuarios/:usuarioId" element={<EditarUsuario />} />
-            <Route path="/footer" element={<Footer />} />
-            <Route path="/InicioReservas" element={<InfoReserva />} />
-            <Route path="/InicioReservaMesa" element={<InicioMesa />} />
-            <Route path="/reservalocal" element={<ReservaLocal />} />
-            <Route path="/RegistrarProductos" element={<RegistroProductos />} />
-          </Routes>
-        </Router>
-      </Fragment>
-    </UserProvider>
+    <>
+      <NavBarComponent />
+      <main>
+        <Routes>
+          {/* Rutas públicas */}
+          <Route path='/' element={<Index />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/registrocliente" element={<FormularioRegistro />} />
+
+          {/* Rutas protegidas para administradores */}
+          <Route path="/consultausarios" element={
+            <ProtectedRoute>
+              <ConsultaUsuarios />
+            </ProtectedRoute>
+          } />
+          <Route path="/regsitroempleados" element={
+            <ProtectedRoute>
+              <FormularioRegiEmp />
+            </ProtectedRoute>
+          } />
+          <Route path="/editarusuarios/:usuarioId" element={
+            <ProtectedRoute>
+              <EditarUsuario />
+            </ProtectedRoute>
+          } />
+          <Route path="/RegistrarProductos" element={
+            <ProtectedRoute>
+              <RegistroProductos />
+            </ProtectedRoute>
+          } />
+          <Route path="/GestionProductos" element={
+            <ProtectedRoute>
+              <GestionProductos />
+            </ProtectedRoute>
+          } />
+
+          {/* Rutas protegidas para clientes y meseros */}
+          <Route path="/InicioReservas" element={
+            <ProtectedRoute>
+              <InfoReserva />
+            </ProtectedRoute>
+          } />
+          <Route path="/InicioReservaMesa" element={
+            <ProtectedRoute>
+              <InicioMesa />
+            </ProtectedRoute>
+          } />
+          <Route path="/reservalocal" element={
+            <ProtectedRoute>
+              <ReservaLocal />
+            </ProtectedRoute>
+          } />
+          <Route path="/productos" element={
+            <ProtectedRoute>
+              <ProductosCliente />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/Carrito" element={
+            <ProtectedRoute>
+              <Carrito />
+            </ProtectedRoute>
+          } />
+
+
+          {/* Ruta para cerrar sesión */}
+          <Route path="/logout" element={<Logout />} />
+        </Routes>
+
+        <Footer/>
+      </main>
+    </>
   );
 };
 

@@ -114,12 +114,12 @@ const ReservaLocal = () => {
   };
 
   return (
-    <div>
+    <div >
       <meta charSet="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>Formulario de Reserva local</title>
       <link rel="icon" type="image/png" href="https://i.ibb.co/gj0Bpcc/logo-empresa-mila.png" />
-      <section className="min-h-screen relative">
+      <section className="min-h-screen relative mt-12">
         <div className="background-overlay"></div>
         <div className="reservation-form">
           <h2 className='titulo'>Personaliza tu reserva de mesa</h2>
@@ -401,7 +401,7 @@ const ReservaLocal = () => {
           position: absolute; /* Fijo en la parte inferior de la pantalla */
           bottom: 0;
           width: 100%; /* Ocupa todo el ancho */
-          background-color: rgb(255, 251, 26);
+          background-color: rgb(235, 235, 180);
           color: #000000;
           padding: 15px 0;
           border: none;
@@ -412,10 +412,10 @@ const ReservaLocal = () => {
         }
 
         .continue-btn:hover {
-          background-color: #ffffff;
+           background-color: rgb(220, 220, 160);
         }
       `}</style>
-    <Footer />
+    <Footer  />
     </div>
   );
 };

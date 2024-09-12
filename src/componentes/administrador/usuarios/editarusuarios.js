@@ -15,7 +15,6 @@ const EditarUsuario = () => {
         rol: '',
         titulo: '',
         horario: '',
-        redes: ''
     });
     const [error, setError] = useState('');
 
@@ -178,21 +177,7 @@ const EditarUsuario = () => {
                                 </div>
                             )}
 
-                            {/* Redes Sociales (Solo para community manager) */}
-                            {formData.rol === 'community manager' && (
-                                <div className="col-span-2">
-                                    <label className="block font-semibold text-black mb-1">
-                                        <i className="fas fa-share-alt text-black"></i> Redes Sociales
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="redes"
-                                        className="w-full border-b-2 border-gold bg-gray-100 p-2 focus:outline-none"
-                                        value={formData.redes}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-                            )}
+
 
                             <div className="col-span-4 flex justify-between mt-4">
                                 <button
