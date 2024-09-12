@@ -26,6 +26,7 @@ import GestionEventos from "./componentes/administrador/eventos/ModificarEventos
 import FormularioInscripcion from "./componentes/cliente/eventos/FormularioInscripcion";
 import ProductosCliente from './componentes/cliente/Productos/productos'
 import GestionProductos from './componentes/administrador/Productos/GestionProductos';
+import Servicios from './componentes/servicios'
 
 const App = () => {
   const { role } = useContext(UserContext);
@@ -151,6 +152,7 @@ const App = () => {
 
           {/* Ruta para cerrar sesión */}
           <Route path="/logout" element={<Logout />} />
+          <Route path="/servicios" element={<Servicios />} />
         </Routes>
 
         <Footer/>
