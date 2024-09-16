@@ -122,7 +122,7 @@ const BarraCliente = () => {
               </button>
               {showUserMenu && (
                 <div id="user-menu" className="absolute right-0 mt-2 w-48 py-2 bg-white border border-gray-200 rounded-lg shadow-lg">
-                  <Link to="/perfil" className="block px-4 py-2 text-gray-700 hover:bg-yellow-200 no-underline">Perfil</Link>
+                  <Link to="/perfilusuario" className="block px-4 py-2 text-gray-700 hover:bg-yellow-200 no-underline">Perfil</Link>
                   <button onClick={handleLogout} className="block w-full px-4 py-2 text-red-700 hover:bg-yellow-200 text-left">Cerrar sesión</button>
                 </div>
               )}

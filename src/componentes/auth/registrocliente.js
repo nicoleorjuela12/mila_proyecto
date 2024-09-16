@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, {  useContext,useState } from 'react';
 import axios from 'axios';
+import { UserContext } from '../../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import Footer from '../../componentes/Footer/footer';
+
 
 const FormularioRegistro = () => {
+  const { setRole } = useContext(UserContext); 
+
   const [formData, setFormData] = useState({
     nombre: '',
     apellido: '',
@@ -39,7 +42,29 @@ const FormularioRegistro = () => {
       ...formData,
       [name]: type === 'checkbox' ? checked : value,
     });
+
+    // Validación condicional para el campo número de documento
+    if (name === 'tipo_documento') {
+      // Si el tipo de documento es "Cedula de extranjeria", aplicar validación especial
+      if (value === 'Cedula de extranjeria') {
+        validateNumeroDocumento(formData.numero_documento, 'Cedula de extranjeria');
+      }
+    }
   };
+
+  const validateNumeroDocumento = (numeroDocumento, tipoDocumento) => {
+    let regex;
+    if (tipoDocumento === 'Cedula de extranjeria') {
+      regex = /^[A-Z0-9]{7,10}$/i; // Ajusta según el formato específico para "Cédula de extranjería"
+    } else {
+      regex = /^\d{8,12}$/; // Para otros tipos de documentos
+    }
+    if (!regex.test(numeroDocumento)) {
+      // Manejo de error o estado de validación
+      console.error('Número de documento inválido para el tipo de documento seleccionado.');
+    }
+  };
+
 
   const validateForm = () => {
     const { nombre, apellido, telefono, numero_documento, direccion, barrio, email, contrasena } = formData;
@@ -58,15 +83,24 @@ const FormularioRegistro = () => {
     // Validación de teléfono
     if (!/^[0-9]{10}$/.test(telefono)) errors.push('El teléfono debe tener 10 dígitos.');
 
-    // Validación de dirección
-    if (direccion.trim() === '') errors.push('La dirección no puede estar vacía.');
+    const direccionRegex = /^(Calle|Cll|Carrera|Cra|Avenida|Av|Transversal|Tv|Diagonal|Dg)\s.*$/i;
+    const caracteresValidos = /^[a-zA-Z0-9\s#.-]*$/;
 
+    if (!direccionRegex.test(direccion)) {
+      errors.push('La dirección debe comenzar con una palabra clave válida como Calle, Carrera, Avenida, etc.');
+    } else if (!caracteresValidos.test(direccion)) {
+      errors.push('La dirección contiene caracteres no válidos.');
+    }
+    
     // Validación de barrio
     if (/[^a-zA-Z\s]/.test(barrio)) errors.push('El barrio solo debe contener letras.');
 
     // Validación de número de documento
-    if (numero_documento.length < 8 || numero_documento.length > 12) errors.push('El número de documento debe tener entre 8 y 12 caracteres.');
-
+    if (formData.tipo_documento === 'Cedula de extranjeria') {
+      if (numero_documento.length < 7 || numero_documento.length > 10) errors.push('El número de documento para cédula de extranjería debe tener entre 7 y 10 caracteres.');
+    } else {
+      if (numero_documento.length < 8 || numero_documento.length > 12) errors.push('El número de documento debe tener entre 8 y 12 caracteres.');
+    }
     // Validación de contraseña
     const contrasenaRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\W_]).{6,10}$/;
     if (!contrasenaRegex.test(contrasena)) errors.push('La contraseña debe tener entre 6 y 10 caracteres e incluir letras, números y símbolos.');
@@ -118,15 +152,20 @@ const FormularioRegistro = () => {
           aceptaTerminos: false,
         });
       } else {
-        const registerResponse = await axios.post('http://localhost:3000/usuarios', formData);
+        // Establece el rol como 'Cliente'
+        const formDataWithRole = { ...formData, rol: 'Cliente' };
+
+        const registerResponse = await axios.post('http://localhost:3000/usuarios', formDataWithRole);
 
         if (registerResponse.status === 201) {
+          // Actualiza el rol en el contexto
+          setRole(formData.rol);
           Swal.fire({
             icon: 'success',
             title: 'Éxito',
-            text: 'Registro completado exitosamente.',
+            text: 'Registro exitoso.',
           }).then(() => {
-            navigate('/login');
+            navigate('/'); // Redirige al usuario a la página principal
           });
         } else {
           Swal.fire({
@@ -168,7 +207,7 @@ const FormularioRegistro = () => {
           }
         `}
       </style>
-      <div className="h-screen flex flex-col lg:flex-row mt-0 " style={{ height:'150%' }}>
+      <div className="h-screen flex flex-col lg:flex-row mt-0  mb-6" style={{ height:'150%' }} >
         <div className="hidden lg:flex w-full lg:w-1/2 espacio_imagen1 justify-around items-center ">
           <div className="bg-black opacity-20 inset-0 z-0" />
           <div className="w-full mx-auto px-6 lg:px-16 flex-col items-center space-y-6 mb-4">
@@ -177,7 +216,7 @@ const FormularioRegistro = () => {
               <li><i className="fa-solid fa-check" style={{ color: '#FFD43B', marginRight: '3%' }} /> Invitaciones a Eventos Especiales</li>
               <li><i className="fa-solid fa-check" style={{ color: '#FFD43B', marginRight: '3%' }} /> Notificaciones y Recordatorios</li>
               <li><i className="fa-solid fa-check" style={{ color: '#FFD43B', marginRight: '3%' }} /> Podrás realizar tus reservas y cotizaciones</li>
-              <li><i className="fa-solid fa-check" style={{ color: '#FFD43B', marginRight: '3%' }} /> Obtendrás descuentos al realizar tu pedido en línea</li>
+              <li><i className="fa-solid fa-check" style={{ color: '#FFD43B', marginRight: '3%' }} /> Obtendrás descuentos al realizar tu pedido </li>
             </ul>
           </div>
         </div>
@@ -238,7 +277,7 @@ const FormularioRegistro = () => {
 
 
               <div className="flex flex-col space-y-1 relative">
-                <label htmlFor="telefono" className="text-gray-700 font-semibold text-xs">Teléfono</label>
+                <label htmlFor="telefono" className="text-gray-700 font-semibold text-xs">Celular</label>
                 <div className="relative">
                   <i className="fa-solid fa-phone absolute left-2 top-2/4 transform -translate-y-1/2 text-gray-400" />
                   <input
@@ -261,36 +300,6 @@ const FormularioRegistro = () => {
               </div>
 
               <div className="flex flex-col space-y-1 relative">
-                <label htmlFor="numero_documento" className="text-gray-700 font-semibold text-xs">Número de Documento</label>
-                <div className="relative">
-                  <i className="fa-solid fa-id-card absolute left-2 top-2/4 transform -translate-y-1/2 text-gray-400" />
-                  <input
-                    id="numero_documento"
-                    type="text"  // Cambiar a tipo "text" para permitir validación personalizada
-                    name="numero_documento"
-                    value={formData.numero_documento}
-                    onChange={handleChange}
-                    onInput={(e) => {
-                      // Permitir solo números y limitar la longitud
-                      const value = e.target.value.replace(/[^0-9]/g, '');
-                      if (value.length <= 12) {
-                        e.target.value = value;
-                      } else {
-                        e.target.value = value.slice(0, 12);
-                      }
-                    }}
-                    minLength={8}
-                    maxLength={12}
-                    pattern="\d{8,12}"  // Asegura que el valor tenga entre 8 y 12 dígitos
-                    title="Número de documento válido entre 8 y 12 dígitos"
-                    className="pl-10 pr-2 border-2 border-yellow-300 py-1 rounded-lg text-sm outline-none focus:border-yellow-600 w-full"
-                    required
-                  />
-                </div>
-              </div>
-
-
-              <div className="flex flex-col space-y-1 relative">
                 <label htmlFor="tipo_documento" className="text-gray-700 font-semibold text-xs">Tipo de Documento</label>
                 <select
                   id="tipo_documento"
@@ -301,9 +310,52 @@ const FormularioRegistro = () => {
                   className="border-2 border-yellow-300 py-1 rounded-lg text-sm outline-none focus:border-yellow-600 w-full"
                 >
                   <option value="Cedula de ciudadania">Cédula de Ciudadanía</option>
-                  <option value="Cedula de extranjeria">Cedula de extranjeria</option>
+                  <option value="Cedula de extranjeria">Cédula de Extranjería</option>
                 </select>
               </div>
+
+              <div className="flex flex-col space-y-1 relative">
+                <label htmlFor="numero_documento" className="text-gray-700 font-semibold text-xs">Número de Documento</label>
+                <div className="relative">
+                  <i className="fa-solid fa-id-card absolute left-2 top-2/4 transform -translate-y-1/2 text-gray-400" />
+                  <input
+                    id="numero_documento"
+                    type="text"
+                    name="numero_documento"
+                    value={formData.numero_documento}
+                    onChange={(e) => {
+                      handleChange(e);
+                      const tipoDocumento = formData.tipo_documento;
+                      if (tipoDocumento === 'Cedula de extranjeria') {
+                        validateNumeroDocumento(e.target.value, tipoDocumento);
+                      }
+                    }}
+                    onInput={(e) => {
+                      const tipoDocumento = formData.tipo_documento;
+                      let value = e.target.value;
+
+                      if (tipoDocumento === 'Cedula de extranjeria') {
+                        // Permitir letras y números, limitar a 12 caracteres
+                        value = value.replace(/[^A-Z0-9]/gi, '').slice(0, 12);
+                      } else {
+                        // Permitir solo números, limitar a 12 caracteres
+                        value = value.replace(/[^0-9]/g, '').slice(0, 12);
+                      }
+
+                      e.target.value = value;
+                    }}
+                    minLength={8}
+                    maxLength={12}
+                    pattern={formData.tipo_documento === 'Cedula de extranjeria' ? '[A-Z0-9]{7,12}' : '[0-9]{8,12}'}
+                    title={formData.tipo_documento === 'Cedula de extranjeria' ? 'Número de documento válido entre 7 y 12 caracteres alfanuméricos' : 'Número de documento válido entre 8 y 12 dígitos'}
+                    className="pl-10 pr-2 border-2 border-yellow-300 py-1 rounded-lg text-sm outline-none focus:border-yellow-600 w-full"
+                    required
+                  />
+                </div>
+              </div>
+
+
+
 
               <div className="flex flex-col space-y-1 relative">
                 <label htmlFor="direccion" className="text-gray-700 font-semibold text-xs">Dirección</label>
@@ -315,12 +367,19 @@ const FormularioRegistro = () => {
                     name="direccion"
                     value={formData.direccion}
                     onChange={handleChange}
+                    onInput={(e) => {
+                      // Permitir solo caracteres válidos para direcciones
+                      e.target.value = e.target.value.replace(/[^a-zA-Z0-9\s#.-]/g, '');
+                    }}
                     maxLength={50}
                     className="pl-10 pr-2 border-2 border-yellow-300 py-1 rounded-lg text-sm outline-none focus:border-yellow-600 w-full"
                     required
                   />
                 </div>
               </div>
+
+
+
 
               <div className="flex flex-col space-y-1 relative">
                 <label htmlFor="barrio" className="text-gray-700 font-semibold text-xs">Barrio</label>
@@ -360,7 +419,7 @@ const FormularioRegistro = () => {
                         e.target.value = value.slice(0, 55);
                       }
                     }}
-                    minLength={15}
+                    minLength={5}
                     maxLength={55}
                     pattern=".{15,55}"
                     title="El email debe tener entre 15 y 55 caracteres"
@@ -397,12 +456,13 @@ const FormularioRegistro = () => {
               </div>
 
 
-              <div className="flex flex-col text-xs text-gray-600 space-y-1  ">
-                <p>Requisitos de la contraseña:</p>
-                  <ul className="list-disc pl-4">
-                    <li>Entre 6 y 10 caracteres, incluir letras, numeros y simbolos </li>
-                  </ul>
+              <div className="flex flex-col text-xs text-gray-800 space-y-1 mt-2">
+                <p className="font-semibold text-sm">Requisitos de la contraseña:</p>
+                <ul className="list-disc pl-4 space-y-1">
+                  <li className="text-xs">Entre 6 y 10 caracteres, incluir letras, números y símbolos.</li>
+                </ul>
               </div>
+
 
               <div className="flex flex-col space-y-4 col-span-2 mt-2">
                 <div className="flex items-center space-x-4">
@@ -469,7 +529,6 @@ const FormularioRegistro = () => {
         </div>
       )}
 
-      <Footer />
     </div>
   );
 };

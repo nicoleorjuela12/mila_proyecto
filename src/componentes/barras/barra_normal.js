@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faBox, faCalendar, faShoppingBasket, faConciergeBell } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import '../../styles/estilos_barra.css'; // Asegúrate de que la ruta sea correcta
 
 
@@ -13,18 +12,7 @@ const BarraNormal = () => {
         setMobileMenuOpen(!mobileMenuOpen);
     };
 
-    const handleLinkClick = (event) => {
-      event.preventDefault();
-      Swal.fire({
-          icon: 'info',
-          title: '¡Atención!',
-          text: 'Debes iniciar sesión o registrate para realizar esta acción.',
-          confirmButtonText: 'Aceptar',
-          customClass: {
-              confirmButton: 'swal2-confirm-button' // Aplicar la clase personalizada
-          }
-      });
-    };
+    
   
 
     return (
@@ -55,16 +43,16 @@ const BarraNormal = () => {
                     <Link to="/"  className="flex items-center text-gray-900 hover:text-yellow-800 cursor-pointer transition-colors duration-300 font-semibold no-underline">
                         <FontAwesomeIcon icon={faHome} className="mr-2" /> Inicio
                     </Link>
-                    <Link to="/productos" onClick={handleLinkClick} className="flex items-center text-gray-900 hover:text-yellow-800 cursor-pointer transition-colors duration-300 font-semibold no-underline">
+                    <Link to="" className="flex items-center text-gray-900 hover:text-yellow-800 cursor-pointer transition-colors duration-300 font-semibold no-underline">
                         <FontAwesomeIcon icon={faBox} className="mr-2" /> Productos
                     </Link>
-                    <Link to="/reservas" onClick={handleLinkClick} id="reservas-button" className="flex items-center text-gray-900 hover:text-yellow-800 cursor-pointer transition-colors duration-300 font-semibold no-underline">
+                    <Link to="/reservas"  id="reservas-button" className="flex items-center text-gray-900 hover:text-yellow-800 cursor-pointer transition-colors duration-300 font-semibold no-underline">
                         <FontAwesomeIcon icon={faCalendar} className="mr-2" /> Reservas
                     </Link>
-                    <Link to="/pedidos" onClick={handleLinkClick} className="flex items-center text-gray-900 hover:text-yellow-800 cursor-pointer transition-colors duration-300 font-semibold no-underline">
+                    <Link to="/pedidos"  className="flex items-center text-gray-900 hover:text-yellow-800 cursor-pointer transition-colors duration-300 font-semibold no-underline">
                         <FontAwesomeIcon icon={faShoppingBasket} className="mr-2" /> Pedidos
                     </Link>
-                    <Link to="/eventos" onClick={handleLinkClick} className="flex items-center text-gray-900 hover:text-yellow-800 cursor-pointer transition-colors duration-300 font-semibold no-underline">
+                    <Link to="/eventos"  className="flex items-center text-gray-900 hover:text-yellow-800 cursor-pointer transition-colors duration-300 font-semibold no-underline">
                         <FontAwesomeIcon icon={faCalendar} className="mr-2" /> Eventos
                     </Link>
                     <Link to="/servicios"  className="flex items-center text-gray-900 hover:text-yellow-800 cursor-pointer transition-colors duration-300 font-semibold no-underline">
@@ -94,16 +82,16 @@ const BarraNormal = () => {
                 <Link to="/"  className="block px-4 py-2 text-gray-900 hover:bg-yellow-200 no-underline">
                     <FontAwesomeIcon icon={faHome} className="mr-2" /> Inicio
                 </Link>
-                <Link to="/productos" onClick={() => { handleLinkClick(); setMobileMenuOpen(false); }} className="block px-4 py-2 text-gray-900 hover:bg-yellow-200 no-underline">
+                <Link to=""  className="block px-4 py-2 text-gray-900 hover:bg-yellow-200 no-underline">
                     <FontAwesomeIcon icon={faBox} className="mr-2" /> Productos
                 </Link>
-                <Link to="/reservas" onClick={() => { handleLinkClick(); setMobileMenuOpen(false); }} id="mobile-reservas-button" className="block px-4 py-2 text-gray-900 hover:bg-yellow-200 no-underline">
+                <Link to="/reservas"  id="mobile-reservas-button" className="block px-4 py-2 text-gray-900 hover:bg-yellow-200 no-underline">
                     <FontAwesomeIcon icon={faCalendar} className="mr-2" /> Reservas
                 </Link>
-                <Link to="/pedidos" onClick={() => { handleLinkClick(); setMobileMenuOpen(false); }} className="block px-4 py-2 text-gray-900 hover:bg-yellow-200 no-underline">
+                <Link to="/pedidos"  className="block px-4 py-2 text-gray-900 hover:bg-yellow-200 no-underline">
                     <FontAwesomeIcon icon={faShoppingBasket} className="mr-2" /> Pedidos
                 </Link>
-                <Link to="/eventos" onClick={() => { handleLinkClick(); setMobileMenuOpen(false); }} className="block px-4 py-2 text-gray-900 hover:bg-yellow-200 no-underline">
+                <Link to="/eventos" className="block px-4 py-2 text-gray-900 hover:bg-yellow-200 no-underline">
                     <FontAwesomeIcon icon={faCalendar} className="mr-2" /> Eventos
                 </Link>
                 <Link to="/servicios"  className="block px-4 py-2 text-gray-900 hover:bg-yellow-200 no-underline">

@@ -19,7 +19,7 @@ const Index = () => {
     if (storedRole) {
       setRole(storedRole);
     } else {
-      navigate('/login'); // Redirige a la página de inicio de sesión si no hay rol
+      navigate('/'); // Redirige a la página de inicio de sesión si no hay rol
     }
   }, [setRole, navigate]);
 

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import { Route, Routes } from 'react-router-dom';  
-import { UserContext } from './context/UserContext';
-import ProtectedRoute from './componentes/ProtectedRouter'; 
+import { Route, Routes } from 'react-router-dom';
+import { UserProvider, UserContext } from './context/UserContext';
+import ProtectedRoute from './componentes/ProtectedRouter';
 import Logout from './componentes/logout';
 import Carrito from './componentes/cliente/Pedidos/Carrito';
 import Index from "./paginas/auth/inicio";
@@ -24,9 +24,10 @@ import RegistroEventosCliente from "./componentes/cliente/eventos/EventosCliente
 import RegistroEventos from "./componentes/administrador/eventos/RegistroEventos";
 import GestionEventos from "./componentes/administrador/eventos/ModificarEventos";
 import FormularioInscripcion from "./componentes/cliente/eventos/FormularioInscripcion";
-import ProductosCliente from './componentes/cliente/Productos/productos'
+import ProductosCliente from './componentes/cliente/Productos/productos';
 import GestionProductos from './componentes/administrador/Productos/GestionProductos';
-import Servicios from './componentes/servicios'
+import Servicios from './componentes/servicios';
+import PerfilUsuario from './componentes/Perfil/PerfilUsuario';
 
 const App = () => {
   const { role } = useContext(UserContext);
@@ -44,7 +45,7 @@ const App = () => {
   }
 
   return (
-    <>
+    <UserProvider>
       <NavBarComponent />
       <main>
         <Routes>
@@ -80,7 +81,6 @@ const App = () => {
             </ProtectedRoute>
           } />
 
-          
           <Route path="/InicioReservaMesa" element={
             <ProtectedRoute>
               <InicioMesa />
@@ -105,59 +105,60 @@ const App = () => {
 
           <Route path="/GestionReservaMesa" element={
             <ProtectedRoute>
-              <GestionReservaMesa/>
+              <GestionReservaMesa />
             </ProtectedRoute>
           } />
 
           <Route path="/GestionReservaLocal" element={
             <ProtectedRoute>
-              <ReservaLocal/>
+              <ReservaLocal />
             </ProtectedRoute>
           } />
 
           <Route path="/reservascliente" element={
             <ProtectedRoute>
-              <GestionReservasCliente/>
+              <GestionReservasCliente />
             </ProtectedRoute>
           } />
 
           <Route path="/EventosCliente" element={
             <ProtectedRoute>
-              <RegistroEventosCliente/>
+              <RegistroEventosCliente />
             </ProtectedRoute>
           } />
 
           <Route path="/RegistroEventos" element={
             <ProtectedRoute>
-              <RegistroEventos/>
+              <RegistroEventos />
             </ProtectedRoute>
           } />
 
           <Route path="/ModificarEventos" element={
             <ProtectedRoute>
-              <GestionEventos/>
+              <GestionEventos />
             </ProtectedRoute>
           } />
 
           <Route path="/FormularioInscripcion" element={
             <ProtectedRoute>
-              <FormularioInscripcion/>
+              <FormularioInscripcion />
             </ProtectedRoute>
           } />
 
-
-
-
-
+          <Route path="/perfilusuario" element={
+            <ProtectedRoute>
+              <PerfilUsuario />
+            </ProtectedRoute>
+          } />
 
           {/* Ruta para cerrar sesión */}
           <Route path="/logout" element={<Logout />} />
           <Route path="/servicios" element={<Servicios />} />
         </Routes>
 
-        <Footer/>
+        <Footer />
       </main>
-    </>
+    </UserProvider>
   );
 };
 
