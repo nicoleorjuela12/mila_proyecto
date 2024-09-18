@@ -31,10 +31,9 @@ import PerfilUsuario from './componentes/Perfil/PerfilUsuario';
 
 const App = () => {
   const { role } = useContext(UserContext);
+  console.log('App - role:', role); 
+  let NavBarComponent = BarraNormal; // Valor por defecto
 
-  console.log("Current Role:", role); // Debugging statement
-
-  let NavBarComponent = BarraNormal; // Default value
 
   if (role === 'administrador') {
     NavBarComponent = BarraAdmin;
@@ -53,8 +52,10 @@ const App = () => {
           <Route path='/' element={<Index />} />
           <Route path="/login" element={<Login />} />
           <Route path="/registrocliente" element={<FormularioRegistro />} />
+          <Route path="/servicios" element={<Servicios />} />
+          <Route path="/logout" element={<Logout />} />
 
-          {/* Rutas protegidas para administradores */}
+          {/* Rutas protegidas */}
           <Route path="/consultausarios" element={
             <ProtectedRoute>
               <ConsultaUsuarios />
@@ -80,7 +81,6 @@ const App = () => {
               <GestionProductos />
             </ProtectedRoute>
           } />
-
           <Route path="/InicioReservaMesa" element={
             <ProtectedRoute>
               <InicioMesa />
@@ -96,66 +96,52 @@ const App = () => {
               <ProductosCliente />
             </ProtectedRoute>
           } />
-
           <Route path="/Carrito" element={
             <ProtectedRoute>
               <Carrito />
             </ProtectedRoute>
           } />
-
           <Route path="/GestionReservaMesa" element={
             <ProtectedRoute>
               <GestionReservaMesa />
             </ProtectedRoute>
           } />
-
           <Route path="/GestionReservaLocal" element={
             <ProtectedRoute>
               <ReservaLocal />
             </ProtectedRoute>
           } />
-
           <Route path="/reservascliente" element={
             <ProtectedRoute>
               <GestionReservasCliente />
             </ProtectedRoute>
           } />
-
           <Route path="/EventosCliente" element={
             <ProtectedRoute>
               <RegistroEventosCliente />
             </ProtectedRoute>
           } />
-
           <Route path="/RegistroEventos" element={
             <ProtectedRoute>
               <RegistroEventos />
             </ProtectedRoute>
           } />
-
           <Route path="/ModificarEventos" element={
             <ProtectedRoute>
               <GestionEventos />
             </ProtectedRoute>
           } />
-
           <Route path="/FormularioInscripcion" element={
             <ProtectedRoute>
               <FormularioInscripcion />
             </ProtectedRoute>
           } />
-
           <Route path="/perfilusuario" element={
             <ProtectedRoute>
               <PerfilUsuario />
             </ProtectedRoute>
           } />
-
-          {/* Ruta para cerrar sesión */}
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/servicios" element={<Servicios />} />
         </Routes>
-
         <Footer />
       </main>
     </UserProvider>

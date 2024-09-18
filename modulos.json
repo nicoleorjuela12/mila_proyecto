@@ -125,6 +125,7 @@
       "apellido": "oruela",
       "telefono": "3052970187",
       "numero_documento": "156565665",
+      "rol":"Cliente",
       "tipo_documento": "Cedula de ciudadania",
       "direccion": "cll 133 # 156 a 20",
       "barrio": "santa rita",

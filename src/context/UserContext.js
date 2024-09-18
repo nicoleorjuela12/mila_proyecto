@@ -11,9 +11,19 @@ export const UserProvider = ({ children }) => {
     // Al montar el componente, verifica si el rol está guardado en el localStorage
     const storedRole = localStorage.getItem('role');
     if (storedRole) {
-      setRole(storedRole); // Actualiza el estado con el rol almacenado
+      setRole(storedRole); 
     }
   }, []);
+
+
+  const login = (userRole) => {
+    // Guarda el rol en el estado y en localStorage
+    localStorage.setItem('role', userRole);
+    setRole(userRole);
+
+    // Redirige al usuario a su página de perfil o página principal
+    navigate('/perfil'); // Asegúrate de que la ruta '/perfil' esté configurada
+  };
 
   const logout = () => {
     // Limpia el localStorage y restablece el rol
@@ -27,7 +37,7 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ role, setRole, logout }}>
+    <UserContext.Provider value={{ role, setRole,login ,logout }}>
       {children}
     </UserContext.Provider>
   );

@@ -158,22 +158,24 @@ const FormularioRegistro = () => {
         const registerResponse = await axios.post('http://localhost:3000/usuarios', formDataWithRole);
 
         if (registerResponse.status === 201) {
-          // Actualiza el rol en el contexto
-          setRole(formData.rol);
+          const { id, nombre, rol } = registerResponse.data;
+      
+          
+          localStorage.setItem('userId', id);
+          localStorage.setItem('name', nombre);
+          localStorage.setItem('role', rol);
+      
+          
+          setRole(rol);
+      
           Swal.fire({
-            icon: 'success',
-            title: 'Éxito',
-            text: 'Registro exitoso.',
+              icon: 'success',
+              title: 'Éxito',
+              text: 'Registro exitoso.',
           }).then(() => {
-            navigate('/'); // Redirige al usuario a la página principal
+              navigate('/'); 
           });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Hubo un problema con el registro.',
-          });
-        }
+      }
       }
     } catch (error) {
       Swal.fire({
