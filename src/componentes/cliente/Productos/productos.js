@@ -90,12 +90,25 @@ const ProductosCliente = () => {
     };
 
     const agregarAlCarrito = () => {
-      const nuevoProducto = { ...producto, cantidad };
-      const carritoActualizado = [...carrito, nuevoProducto];
-
-      setCarrito(carritoActualizado);
-      localStorage.setItem('carrito', JSON.stringify(carritoActualizado));
-
+      // Obtiene el carrito guardado en el localStorage
+      const carritoGuardado = JSON.parse(localStorage.getItem('carrito')) || [];
+    
+      // Busca si el producto ya existe en el carrito
+      const productoExistente = carritoGuardado.find(item => item.id === producto.id);
+    
+      if (productoExistente) {
+        // Si el producto ya existe, aumenta la cantidad
+        productoExistente.cantidad += cantidad;
+      } else {
+        // Si el producto no existe, lo agrega al carrito
+        const nuevoProducto = { ...producto, cantidad };
+        carritoGuardado.push(nuevoProducto);
+      }
+    
+      // Actualiza el carrito en el estado y en el localStorage
+      setCarrito(carritoGuardado);
+      localStorage.setItem('carrito', JSON.stringify(carritoGuardado));
+    
       Swal.fire({
         title: `¡${producto.nombre} añadido al carrito!`,
         icon: 'success',
@@ -114,6 +127,7 @@ const ProductosCliente = () => {
         }
       });
     };
+    
 
 
     return (

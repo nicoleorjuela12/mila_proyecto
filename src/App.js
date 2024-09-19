@@ -28,6 +28,8 @@ import ProductosCliente from './componentes/cliente/Productos/productos';
 import GestionProductos from './componentes/administrador/Productos/GestionProductos';
 import Servicios from './componentes/servicios';
 import PerfilUsuario from './componentes/Perfil/PerfilUsuario';
+import DetallesPedido from './componentes/cliente/Pedidos/DetallesPedido';
+import Pedido from './componentes/cliente/Pedidos/verpedido';
 
 const App = () => {
   const { role } = useContext(UserContext);
@@ -139,6 +141,18 @@ const App = () => {
           <Route path="/perfilusuario" element={
             <ProtectedRoute>
               <PerfilUsuario />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/detalles-pedido" element={
+            <ProtectedRoute>
+              <DetallesPedido />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/pedidos" element={
+            <ProtectedRoute>
+              <Pedido />
             </ProtectedRoute>
           } />
         </Routes>
